@@ -2,7 +2,7 @@
  * @Author       : Symphony zhangleping@cezhiqiu.com
  * @Date         : 2024-05-08 20:38:44
  * @LastEditors  : Symphony zhangleping@cezhiqiu.com
- * @LastEditTime : 2024-05-08 20:39:04
+ * @LastEditTime : 2024-05-13 20:44:30
  * @FilePath     : /v2/go-common-v2-dh-validator-manual/findInDb.go
  * @Description  :
  *
@@ -20,7 +20,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func findInDb(needExists, collectionName, field, val string) bool {
+func findInDb(needExists, collectionName, field, deleteStatus, val string) bool {
 	// dhlog.Info(needExists)
 	// dhlog.Info(collectionName)
 	// dhlog.Info(field)
@@ -31,8 +31,17 @@ func findInDb(needExists, collectionName, field, val string) bool {
 		objUserId, _ := primitive.ObjectIDFromHex(val)
 		filter = bson.M{"_id": objUserId}
 	}
-	count, err := mongodb.Count(collectionName, filter)
 
+	switch deleteStatus {
+	case "zero":
+		filter["is_delete"] = 0
+	case "one":
+		filter["is_delete"] = 1
+	}
+	count, err := mongodb.Count(collectionName, filter)
+	// dhlog.Info(fmt.Sprintf("count: %v", count))
+	// dhlog.Info(dhjson.JsonEncodeIndent(filter))
+	// dhlog.Info(deleteStatus)
 	if err != nil {
 		dhlog.Error(err.Error())
 		return false
@@ -44,9 +53,9 @@ func findInDb(needExists, collectionName, field, val string) bool {
 	}
 
 	switch needExists {
-	case "yes":
+	case "yes", "needExists":
 		return isExits
-	case "no":
+	case "no", "needNotExists":
 		return !isExits
 	}
 
@@ -63,11 +72,12 @@ func IsValidfindInDb(fl validator.FieldLevel) bool {
 	needExists := parts[0]
 	collectionName := parts[1]
 	field := parts[2]
+	deleteStatus := parts[4]
 
 	val := fl.Field().String()
 
 	// 从参数中获取所有字段名
 	// fieldNames := split(params)
 
-	return findInDb(needExists, collectionName, field, val)
+	return findInDb(needExists, collectionName, field, deleteStatus, val)
 }
