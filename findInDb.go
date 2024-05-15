@@ -2,7 +2,7 @@
  * @Author       : Symphony zhangleping@cezhiqiu.com
  * @Date         : 2024-05-08 20:38:44
  * @LastEditors  : Symphony zhangleping@cezhiqiu.com
- * @LastEditTime : 2024-05-13 20:44:30
+ * @LastEditTime : 2024-05-14 11:26:04
  * @FilePath     : /v2/go-common-v2-dh-validator-manual/findInDb.go
  * @Description  :
  *
@@ -62,12 +62,25 @@ func findInDb(needExists, collectionName, field, deleteStatus, val string) bool 
 	return false
 }
 
+// func JSONToMap(jsonStr string) (map[string]interface{}, error) {
+// 	var result map[string]interface{}
+// 	err := json.Unmarshal([]byte(jsonStr), &result)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	return result, nil
+// }
+
 func IsValidfindInDb(fl validator.FieldLevel) bool {
 	params := fl.Param()
 	if params == "" {
 		return true // 如果没有指定参数，不执行任何操作
 	}
-
+	// j := dhjson.JsonEncode(fl.Parent().Interface())
+	// m, _ := JSONToMap(j)
+	// dhlog.Info(j)
+	// dhlog.Info(m["project_name"].(string))
+	// dhlog.Info(m["unique_code"].(string))
 	parts := strings.Fields(params) // 使用 Fields 而不是 Split
 	needExists := parts[0]
 	collectionName := parts[1]
