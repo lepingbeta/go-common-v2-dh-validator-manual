@@ -2,7 +2,7 @@
  * @Author       : Symphony zhangleping@cezhiqiu.com
  * @Date         : 2024-05-08 20:38:44
  * @LastEditors  : Symphony zhangleping@cezhiqiu.com
- * @LastEditTime : 2024-05-14 11:26:04
+ * @LastEditTime : 2024-05-17 21:03:58
  * @FilePath     : /v2/go-common-v2-dh-validator-manual/findInDb.go
  * @Description  :
  *
@@ -33,9 +33,9 @@ func findInDb(needExists, collectionName, field, deleteStatus, val string) bool 
 	}
 
 	switch deleteStatus {
-	case "zero":
+	case "zero", "is_not_delete":
 		filter["is_delete"] = 0
-	case "one":
+	case "one", "is_delete":
 		filter["is_delete"] = 1
 	}
 	count, err := mongodb.Count(collectionName, filter)
