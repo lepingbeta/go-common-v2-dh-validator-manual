@@ -1,8 +1,8 @@
 /*
  * @Author       : Symphony zhangleping@cezhiqiu.com
  * @Date         : 2024-05-08 20:38:44
- * @LastEditors  : Symphony zhangleping@cezhiqiu.com
- * @LastEditTime : 2024-06-27 13:20:55
+ * @LastEditors: Symphony zhangleping@cezhiqiu.com
+ * @LastEditTime: 2024-09-19 18:24:05
  * @FilePath     : /v2/go-common-v2-dh-validator-manual/findInDb.go
  * @Description  :
  *
@@ -85,7 +85,7 @@ func IsValidfindInDb(fl validator.FieldLevel) bool {
 	needExists := parts[0]
 	collectionName := parts[1]
 	field := parts[2]
-	deleteStatus := parts[4]
+	deleteStatus := parts[3]
 
 	val := fl.Field().String()
 
